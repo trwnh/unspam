@@ -5,7 +5,7 @@ lazy python script to block ips that generate spammy nginx log lines
 edit your keywords and then run the script
 
 - `unspam <access-log>` will filter log lines based on the dictionary currently defined in spammy().
-- `unspam -b <access-log>` or `unspam -ban <access-log>` will do the same, but also pass the discovered spammy IPs to a custom `ipban` bash script i wrote, which is a thin wrapper around `sudo ufw deny from @IP`
+- `unspam -b <access-log>` or `unspam -ban <access-log>` will do the same, but also pass the discovered spammy IPs to a custom ipban bash script i wrote, which is a thin wrapper around `sudo ufw deny from @IP`
 
 outputs two files with trimmed log files that include only ip, request, and response:
 - `spammy.txt` is a list of detected spam lines
