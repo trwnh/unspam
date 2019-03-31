@@ -15,8 +15,8 @@ maybe in the future i'll expand on this script to be able to use external dictio
 
 ## etc
 contact me if you've got any questions:
-a@trwnh.com (email/xmpp)
-[mastodon.social/@trwnh](https://mastodon.social/@trwnh) (activitypub)
-[trwnh.com](https://trwnh.com) (homepage)
+- a@trwnh.com (email/xmpp)
+- [mastodon.social/@trwnh](https://mastodon.social/@trwnh) (activitypub)
+- [trwnh.com](https://trwnh.com) (homepage)
 
 also if you find yourself unable to load any of my sites, then let me know because i may have used some overly broad dictionary rules while testing this :x
