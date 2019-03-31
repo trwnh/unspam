@@ -1,0 +1,96 @@
+#!/usr/bin/python
+
+from sys import argv
+from subprocess import call
+
+spam = open('spammy.txt', 'w')
+clean = open('clean.txt', 'w')
+
+def main():
+  ban = False
+  if argv[1] == '-ban' or argv[1] == '-b':
+    ban = True
+    args = argv[2:] # remove script path and flag
+  else:
+    args = argv[1:] # remove script path
+  for arg in args: # get each filename
+    with open(arg) as f: # and open it
+      ips = []
+      lines = f.readlines()
+      for line in lines: # of the nginx log
+        ip = line.split(' ', 1)[0] # before 1st space
+        request = line.split('"', 2)[1] # between first 2 quotes
+        response = line.split('"', 2)[2].split(' ',2)[1]
+        #if "CONNECT" in line: print(line) # TODO: add more conditions
+        logline = ip + " " + request + " " + response
+        if spammy(logline):
+          print(logline, file=spam)
+          if ban: ips.append(ip)
+        else: print(logline, file=clean)
+      if ban:
+        ips = list(set(ips)) # dedupe
+        for ip in ips:
+          print("Banning " + ip + "...", flush=True)
+          call(['ipban',ip]) # pass to bash script
+        print( str( len(ips) ) + " unique IPs banned.")
+
+def spammy(line):
+  okstrings = [
+    "99.102.17.149", # my ip
+    "/portfolio", # php app
+    "GET /api.php?", #koken
+    "GET /index.php HTTP", # regular index request
+    "/tag", # tumblr
+    "post/" # tumblr
+  ]
+
+  badstrings = [ # add definitions here
+    #"php", # overly broad
+    #"admin", # overly broad
+    "POST /xmlrpc",
+    "GET /webdav",
+    "GET /manager",
+    "GET /HNAP",
+    "passwd", # attempt to cat
+    "cmdshell", # sql injection attempt
+    ",Password,", 
+    "user/register",
+    "?action=register",
+    "decodeArguments",
+    "wlwmanifest.xml",
+    "\\x0",
+    "GET http://",
+    "check_proxy",
+    "oihfoe09fposf.php",
+    "baaqifg.php",
+    "ubh/up.php",
+    "/horde",
+    "/imp/test.php",
+    "phpformbuilder",
+    "elfinder",
+    "connector.minimal.php",
+    "jquery-file-upload",
+    "hdflvplayer",
+    "?option=com_",
+    "media/vuln.txt",
+    "/pwn.gif",
+    "jbcatalog",
+    "sexycontactform",
+    "rokdownloads",
+    "stories/up.php",
+    "uploadify.php",
+    "adsmanager",
+    "upload.alberghi.php",
+    "s5_media_player",
+    "extplorer/upload",
+    "fckedit"
+    
+  ]
+  
+  for string in okstrings:
+    if string in line: return False
+  
+  for string in badstrings:
+    if string in line: return True
+
+main()
