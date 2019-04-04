@@ -19,7 +19,8 @@ def main():
       lines = f.readlines()
       for line in lines: # of the nginx log
         ip = line.split(' ', 1)[0] # before 1st space
-        request = line.split('"', 2)[1] # between first 2 quotes
+        request = line.split('"', 2)[1][:-9] # between first 2 quotes
+        protocol = line.split('"', 2)[1][-8:]
         response = line.split('"', 2)[2].split(' ',2)[1]
         #if "CONNECT" in line: print(line) # TODO: add more conditions
         logline = ip + " " + request + " " + response
@@ -37,16 +38,29 @@ def main():
 def spammy(line):
   okstrings = [
     "99.102.17.149", # my ip
-    "/portfolio", # php app
     "GET /api.php?", #koken
     "GET /index.php HTTP", # regular index request
     "/tag", # tumblr
-    "post/" # tumblr
+    "post/", # tumblr
+    "jabber:client", # prosody proxy
   ]
 
   badstrings = [ # add definitions here
     #"php", # overly broad
     #"admin", # overly broad
+    ".php 404",
+    "UNION",
+    "SELECT",
+    "ORDER%20BY",
+    "%3Cscript%3E",
+    "%20AND%20",
+    "SELECT%20",
+    "WAITFOR%20DELAY",
+    "GET /back.zip",
+    "GET /wp-content/plugins/apikey/apikey.php?test=hello 404",
+    "GET /index.php/admin/ 404",
+    "GET /downloader/ 404",
+    "GET /rss/catalog/notifystock/ 404",
     "POST /xmlrpc",
     "GET /webdav",
     "GET /manager",
@@ -83,8 +97,7 @@ def spammy(line):
     "upload.alberghi.php",
     "s5_media_player",
     "extplorer/upload",
-    "fckedit"
-    
+    "fckedit",
   ]
   
   for string in okstrings:
