@@ -46,9 +46,8 @@ def spammy(line):
   ]
 
   badstrings = [ # add definitions here
-    #"php", # overly broad
-    #"admin", # overly broad
     ".php 404",
+    ".PHP 404",
     "UNION",
     "SELECT",
     "ORDER%20BY",
@@ -65,16 +64,23 @@ def spammy(line):
     "GET /webdav",
     "GET /manager",
     "GET /HNAP",
-    "passwd", # attempt to cat
-    "cmdshell", # sql injection attempt
+    "GET /phpMyadmin",
+    "GET /phpmyadmin",
+    "GET /mysql/",
+    "w00tw00t",
+    "sqlmanager",
+    "POST /m.php?pbid=open",
+    "passwd",
+    "cmdshell",
+    "cmd.exe",
+    "invokefunction",
+    "hydra.php",
+    "?s=%2f%69%6e",
     ",Password,", 
     "user/register",
     "?action=register",
     "decodeArguments",
     "wlwmanifest.xml",
-    "\\x0",
-    "GET http://",
-    "check_proxy",
     "oihfoe09fposf.php",
     "baaqifg.php",
     "ubh/up.php",
